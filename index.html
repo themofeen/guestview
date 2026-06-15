@@ -1,717 +1,642 @@
-cat > /mnt/user-data/outputs/dinebook_mini_app.html << 'HTMLEOF'
 <!DOCTYPE html>
 <html lang="uz">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>DineBook — Premium Restoran</title>
-<script src="https://unpkg.com/feather-icons"></script>
+<title>DineBook</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;}
-:root{
-  --gold:#C9A84C;
-  --gold-light:#F0D080;
-  --gold-dark:#8B6914;
-  --gold-bg:#120F06;
-  --gold-surface:#1A1408;
-  --gold-card:#1E1608;
-  --gold-border:#3D2E0A;
-  --gold-muted:#6B5020;
-  --gold-deep:#251C08;
-}
-body{background:var(--gold-bg);color:var(--gold-light);}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#F7F3EE;}
 
-/* ─── VIEWS ─── */
-.view{display:none;flex-direction:column;min-height:100vh;}
+:root{
+  --gold:#C9922A;
+  --gold-light:#E8A93A;
+  --gold-pale:#FFF8EE;
+  --gold-soft:#FFF0D6;
+  --brown:#5C3D1E;
+  --brown-light:#8B5E3C;
+  --cream:#FEFAF5;
+  --surface:#FFFFFF;
+  --bg:#F7F3EE;
+  --border:#EDE5D8;
+  --text-main:#2C1A0E;
+  --text-sub:#8B7355;
+  --text-hint:#B8A090;
+  --tag-bg:#FFF0D6;
+  --tag-txt:#8B5E3C;
+  --green:#2E7D32;
+  --red:#C62828;
+}
+
+.view{display:none;flex-direction:column;height:100vh;overflow:hidden;}
 .view.active{display:flex;}
 
-/* ─── TOP BAR ─── */
-.top-bar{padding:20px 18px 0;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-.brand{display:flex;align-items:center;gap:10px;}
-.brand-icon{width:38px;height:38px;border-radius:10px;background:var(--gold);display:flex;align-items:center;justify-content:center;}
-.brand-name{font-size:17px;font-weight:600;color:var(--gold-light);}
-.brand-sub{font-size:11px;color:var(--gold-muted);margin-top:1px;}
-.notif-btn{width:38px;height:38px;border-radius:10px;border:0.5px solid var(--gold-border);background:var(--gold-surface);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gold);}
+/* NAV BAR */
+.navbar{flex-shrink:0;background:var(--surface);border-bottom:1px solid var(--border);padding:0 16px;display:flex;align-items:center;justify-content:space-between;height:56px;}
+.navbar-brand{display:flex;align-items:center;gap:8px;}
+.logo-dot{width:32px;height:32px;border-radius:10px;background:var(--gold);display:flex;align-items:center;justify-content:center;}
+.logo-dot svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;}
+.brand-name{font-size:18px;font-weight:700;color:var(--brown);}
+.nav-icon-btn{width:36px;height:36px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;}
+.nav-icon-btn svg{width:18px;height:18px;stroke:var(--brown);fill:none;stroke-width:2;stroke-linecap:round;}
 
-/* ─── BACK HEADER ─── */
-.back-bar{padding:16px 18px 0;display:flex;align-items:center;gap:10px;flex-shrink:0;}
-.back-btn{display:flex;align-items:center;gap:6px;color:var(--gold);font-size:14px;cursor:pointer;background:none;border:none;padding:6px 0;}
-.back-title{font-size:17px;font-weight:500;color:var(--gold-light);flex:1;text-align:center;padding-right:24px;}
+/* BACK NAV */
+.back-nav{flex-shrink:0;background:var(--surface);border-bottom:1px solid var(--border);height:56px;display:flex;align-items:center;padding:0 16px;gap:10px;}
+.back-btn{display:flex;align-items:center;gap:4px;color:var(--gold);font-size:14px;font-weight:500;background:none;border:none;cursor:pointer;padding:4px 0;}
+.back-btn svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2.5;stroke-linecap:round;}
+.back-nav-title{font-size:16px;font-weight:600;color:var(--text-main);flex:1;text-align:center;padding-right:28px;}
 
-/* ─── HERO ─── */
-.hero{padding:20px 18px 0;}
-.hero-greeting{font-size:13px;color:var(--gold-muted);margin-bottom:4px;}
-.hero-title{font-size:22px;font-weight:600;color:var(--gold-light);line-height:1.3;}
-.hero-sub{font-size:13px;color:var(--gold-dark);margin-top:4px;}
+/* SCROLL */
+.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.scroll::-webkit-scrollbar{display:none;}
 
-/* ─── BENTO GRID ─── */
-.bento{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:20px 18px 0;}
-.tile{border-radius:18px;border:0.5px solid var(--gold-border);cursor:pointer;overflow:hidden;transition:opacity 0.15s,transform 0.1s;}
-.tile:active{opacity:0.8;transform:scale(0.98);}
-.tile-full{grid-column:1/-1;}
+/* HOME */
+.home-banner{background:linear-gradient(135deg,#C9922A,#E8A93A);padding:20px 16px 24px;position:relative;overflow:hidden;}
+.home-banner::after{content:'';position:absolute;right:-20px;top:-20px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,0.08);}
+.home-loc{display:flex;align-items:center;gap:4px;font-size:12px;color:rgba(255,255,255,0.8);margin-bottom:6px;}
+.home-loc svg{width:14px;height:14px;stroke:rgba(255,255,255,0.8);fill:none;stroke-width:2;stroke-linecap:round;}
+.home-title{font-size:22px;font-weight:700;color:#fff;line-height:1.2;margin-bottom:4px;}
+.home-sub{font-size:13px;color:rgba(255,255,255,0.85);}
 
-.tile-icon-wrap{width:40px;height:40px;border-radius:12px;background:var(--gold-deep);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.tile-arrow{width:26px;height:26px;border-radius:8px;background:var(--gold-deep);display:flex;align-items:center;justify-content:center;color:var(--gold);flex-shrink:0;}
+.search-box{margin:14px 16px 0;position:relative;}
+.search-box input{width:100%;padding:11px 14px 11px 40px;border-radius:12px;border:1.5px solid var(--border);background:var(--surface);font-size:14px;color:var(--text-main);outline:none;}
+.search-box input::placeholder{color:var(--text-hint);}
+.search-box input:focus{border-color:var(--gold);}
+.search-box svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:18px;height:18px;stroke:var(--text-hint);fill:none;stroke-width:2;stroke-linecap:round;}
 
-/* hero tile */
-.tile-hero{background:var(--gold-card);padding:20px;display:flex;flex-direction:column;justify-content:space-between;min-height:130px;}
-.tile-hero .t-label{font-size:10px;color:var(--gold-muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px;}
-.tile-hero .t-title{font-size:20px;font-weight:600;color:var(--gold-light);line-height:1.2;}
-.tile-hero .t-sub{font-size:12px;color:var(--gold);margin-top:4px;}
-.tile-hero .t-badge{display:inline-flex;align-items:center;gap:5px;background:var(--gold);color:#1A1408;font-size:11px;font-weight:600;padding:5px 12px;border-radius:20px;margin-top:10px;}
+/* CATEGORY CHIPS */
+.cats{display:flex;gap:8px;padding:14px 16px;overflow-x:auto;scrollbar-width:none;flex-shrink:0;}
+.cats::-webkit-scrollbar{display:none;}
+.cat{display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0;cursor:pointer;}
+.cat-icon{width:52px;height:52px;border-radius:16px;background:var(--surface);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:24px;transition:all 0.15s;}
+.cat.active .cat-icon{background:var(--gold-soft);border-color:var(--gold);}
+.cat-label{font-size:11px;color:var(--text-sub);font-weight:500;}
+.cat.active .cat-label{color:var(--gold);}
 
-/* small tile */
-.tile-sm{background:var(--gold-surface);padding:16px;display:flex;flex-direction:column;justify-content:space-between;min-height:130px;}
-.tile-sm .t-title{font-size:14px;font-weight:500;color:var(--gold-light);margin-top:10px;line-height:1.3;}
-.tile-sm .t-sub{font-size:11px;color:var(--gold-muted);margin-top:3px;}
+/* SECTION */
+.sec-header{display:flex;align-items:center;justify-content:space-between;padding:4px 16px 10px;}
+.sec-title{font-size:16px;font-weight:700;color:var(--text-main);}
+.sec-all{font-size:13px;color:var(--gold);font-weight:500;}
 
-/* accent tile */
-.tile-accent{background:var(--gold);}
-.tile-accent .t-title{color:#120F06;}
-.tile-accent .t-sub{color:#8B6914;}
-.tile-accent .tile-icon-wrap{background:#EFD080;}
-.tile-accent .tile-arrow{background:#B89040;color:#1A1408;}
+/* PROMO BANNER */
+.promo-scroll{display:flex;gap:10px;padding:0 16px 14px;overflow-x:auto;scrollbar-width:none;}
+.promo-scroll::-webkit-scrollbar{display:none;}
+.promo-card{flex-shrink:0;width:260px;height:90px;border-radius:14px;padding:14px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;}
+.promo-card.p1{background:linear-gradient(135deg,#C9922A,#E8A93A);}
+.promo-card.p2{background:linear-gradient(135deg,#5C3D1E,#8B5E3C);}
+.promo-title{font-size:15px;font-weight:700;color:#fff;}
+.promo-sub{font-size:11px;color:rgba(255,255,255,0.85);}
+.promo-badge{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.2);border-radius:8px;padding:6px 10px;font-size:11px;color:#fff;font-weight:600;}
 
-/* qr tile */
-.tile-qr{background:var(--gold-deep);padding:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:130px;}
-.qr-box{width:60px;height:60px;border:1.5px solid var(--gold);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--gold);margin-bottom:10px;}
-.tile-qr .t-title{font-size:13px;font-weight:500;color:var(--gold-light);}
-.tile-qr .t-sub{font-size:11px;color:var(--gold-muted);margin-top:2px;}
+/* RESTORAN CARD */
+.rest-list{padding:0 16px;display:flex;flex-direction:column;gap:12px;padding-bottom:20px;}
+.rcard{background:var(--surface);border-radius:16px;border:1px solid var(--border);overflow:hidden;cursor:pointer;transition:transform 0.15s;}
+.rcard:active{transform:scale(0.98);}
+.rcard-img{width:100%;height:150px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:60px;position:relative;}
+.rcard-badge{position:absolute;top:10px;left:10px;background:var(--gold);color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;}
+.rcard-fav{position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.9);display:flex;align-items:center;justify-content:center;}
+.rcard-fav svg{width:16px;height:16px;stroke:#C62828;fill:none;stroke-width:2;}
+.rcard-body{padding:12px;}
+.rcard-name{font-size:15px;font-weight:700;color:var(--text-main);margin-bottom:4px;}
+.rcard-row{display:flex;align-items:center;gap:12px;font-size:12px;color:var(--text-sub);margin-bottom:8px;}
+.rcard-rating{display:flex;align-items:center;gap:3px;color:var(--gold);font-weight:600;}
+.rcard-tags{display:flex;gap:6px;flex-wrap:wrap;}
+.rtag{font-size:11px;padding:3px 8px;border-radius:20px;background:var(--tag-bg);color:var(--tag-txt);font-weight:500;}
+.rcard-footer{border-top:1px solid var(--border);padding:8px 12px;display:flex;align-items:center;justify-content:space-between;background:var(--gold-pale);}
+.rcard-time{font-size:11px;color:var(--text-sub);display:flex;align-items:center;gap:3px;}
+.rcard-time svg{width:12px;height:12px;stroke:var(--text-sub);fill:none;stroke-width:2;}
+.rcard-open{font-size:11px;color:var(--green);font-weight:600;}
 
-/* stats tile */
-.tile-stats{background:var(--gold-surface);grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;border-radius:18px;overflow:hidden;border:0.5px solid var(--gold-border);}
-.stat-cell{padding:16px;}
-.stat-cell:first-child{border-right:0.5px solid var(--gold-border);}
-.stat-dot{width:6px;height:6px;border-radius:50%;margin-bottom:8px;}
-.stat-num{font-size:26px;font-weight:600;margin-bottom:2px;}
-.stat-label{font-size:11px;color:var(--gold-muted);}
+/* BOTTOM TAB */
+.tabbar{flex-shrink:0;background:var(--surface);border-top:1px solid var(--border);display:flex;height:60px;padding-bottom:4px;}
+.tab-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;border:none;background:none;}
+.tab-item svg{width:22px;height:22px;stroke:var(--text-hint);fill:none;stroke-width:1.8;stroke-linecap:round;}
+.tab-item span{font-size:10px;color:var(--text-hint);font-weight:500;}
+.tab-item.active svg{stroke:var(--gold);}
+.tab-item.active span{color:var(--gold);}
 
-/* wide tile */
-.tile-wide{background:var(--gold-surface);padding:14px 16px;display:flex;align-items:center;gap:12px;grid-column:1/-1;min-height:64px;}
-.tile-wide .t-title{font-size:14px;font-weight:500;color:var(--gold-light);}
-.tile-wide .t-sub{font-size:12px;color:var(--gold-muted);margin-top:2px;}
-.tw-chevron{color:var(--gold-border);margin-left:auto;}
+/* DETAIL */
+.detail-img{width:100%;height:220px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:80px;position:relative;}
+.detail-info{background:var(--surface);padding:16px;border-bottom:1px solid var(--border);}
+.detail-name{font-size:20px;font-weight:700;color:var(--text-main);margin-bottom:6px;}
+.detail-rating{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.d-stars{color:var(--gold);font-size:15px;font-weight:600;}
+.d-count{font-size:13px;color:var(--text-sub);}
+.detail-meta{font-size:13px;color:var(--text-sub);display:flex;gap:14px;margin-bottom:4px;}
+.detail-open{font-size:13px;color:var(--green);font-weight:600;}
 
-.divider{height:0.5px;background:var(--gold-deep);margin:20px 18px 0;}
-.section-label{font-size:11px;color:var(--gold-muted);padding:14px 18px 0;letter-spacing:0.6px;text-transform:uppercase;}
+.action-btns{display:flex;gap:10px;padding:12px 16px;background:var(--surface);border-bottom:1px solid var(--border);}
+.btn-primary{flex:1;background:var(--gold);color:#fff;border:none;border-radius:12px;padding:11px;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;}
+.btn-secondary{flex:1;background:var(--gold-pale);color:var(--brown);border:1.5px solid var(--gold);border-radius:12px;padding:11px;font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;}
 
-/* ─── SCROLL CONTENT ─── */
-.scroll-content{flex:1;overflow-y:auto;padding-bottom:32px;}
+.menu-cats{display:flex;gap:8px;padding:12px 16px;overflow-x:auto;scrollbar-width:none;background:var(--surface);border-bottom:1px solid var(--border);}
+.menu-cats::-webkit-scrollbar{display:none;}
+.mcpill{padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;white-space:nowrap;cursor:pointer;border:1.5px solid var(--border);color:var(--text-sub);background:var(--surface);}
+.mcpill.active{background:var(--gold);color:#fff;border-color:var(--gold);}
 
-/* ─── SEARCH BAR ─── */
-.search-wrap{padding:14px 18px 0;position:relative;}
-.search-input{width:100%;padding:10px 14px 10px 38px;border:0.5px solid var(--gold-border);border-radius:12px;font-size:14px;background:var(--gold-surface);color:var(--gold-light);outline:none;}
-.search-input::placeholder{color:var(--gold-muted);}
-.search-icon{position:absolute;left:30px;top:50%;transform:translateY(-50%);color:var(--gold-muted);}
+.menu-item{display:flex;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);background:var(--surface);cursor:pointer;}
+.mi-emoji{width:72px;height:72px;border-radius:12px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:34px;flex-shrink:0;}
+.mi-info{flex:1;}
+.mi-name{font-size:14px;font-weight:600;color:var(--text-main);margin-bottom:3px;}
+.mi-desc{font-size:12px;color:var(--text-sub);line-height:1.4;margin-bottom:6px;}
+.mi-price{font-size:14px;font-weight:700;color:var(--gold);}
+.mi-add{width:30px;height:30px;border-radius:50%;background:var(--gold);border:none;color:#fff;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;align-self:flex-end;}
 
-/* ─── CATEGORY TABS ─── */
-.tabs{display:flex;gap:8px;padding:12px 18px 0;overflow-x:auto;scrollbar-width:none;}
-.tabs::-webkit-scrollbar{display:none;}
-.tab-pill{padding:6px 16px;border-radius:20px;font-size:13px;white-space:nowrap;cursor:pointer;border:0.5px solid var(--gold-border);background:var(--gold-surface);color:var(--gold-muted);transition:all 0.15s;}
-.tab-pill.active{background:var(--gold);color:#120F06;border-color:var(--gold);font-weight:500;}
-
-/* ─── RESTORAN CARDS ─── */
-.rest-list{padding:12px 18px 0;display:flex;flex-direction:column;gap:12px;}
-.rest-card{background:var(--gold-card);border-radius:16px;border:0.5px solid var(--gold-border);overflow:hidden;cursor:pointer;transition:opacity 0.15s;}
-.rest-card:active{opacity:0.8;}
-.rest-emoji{width:100%;height:130px;display:flex;align-items:center;justify-content:center;font-size:56px;background:var(--gold-deep);}
-.rest-body{padding:14px;}
-.rest-name{font-size:16px;font-weight:500;color:var(--gold-light);margin-bottom:6px;}
-.rest-meta{display:flex;align-items:center;gap:14px;font-size:12px;color:var(--gold-muted);margin-bottom:8px;}
-.rest-rating{display:flex;align-items:center;gap:3px;color:var(--gold);font-weight:500;}
-.rest-tags{display:flex;gap:6px;flex-wrap:wrap;}
-.rest-tag{font-size:11px;padding:3px 9px;border-radius:20px;background:var(--gold-deep);color:var(--gold);border:0.5px solid var(--gold-border);}
-
-/* ─── DETAIL VIEW ─── */
-.detail-hero{width:100%;height:200px;display:flex;align-items:center;justify-content:center;font-size:80px;background:var(--gold-deep);}
-.detail-info{padding:16px 18px;border-bottom:0.5px solid var(--gold-border);}
-.detail-name{font-size:21px;font-weight:600;color:var(--gold-light);margin-bottom:8px;}
-.detail-rating-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
-.d-stars{color:var(--gold);font-size:14px;}
-.d-rnum{font-size:14px;font-weight:500;color:var(--gold-light);}
-.d-rcount{font-size:13px;color:var(--gold-muted);}
-.detail-loc{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--gold-muted);margin-bottom:4px;}
-.detail-hours{display:flex;align-items:center;gap:6px;font-size:13px;color:#639922;}
-.action-row{display:flex;gap:10px;padding:14px 18px;border-bottom:0.5px solid var(--gold-border);}
-.btn-gold{flex:1;background:var(--gold);color:#120F06;border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:opacity 0.15s;}
-.btn-gold:active{opacity:0.8;}
-.btn-outline-gold{flex:1;background:none;color:var(--gold);border:0.5px solid var(--gold);border-radius:12px;padding:12px;font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;}
-.sec-title{font-size:15px;font-weight:500;color:var(--gold-light);padding:16px 18px 8px;display:flex;align-items:center;gap:6px;}
-
-/* menu items */
-.menu-item{display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:0.5px solid var(--gold-border);}
-.menu-emoji{width:50px;height:50px;border-radius:12px;background:var(--gold-deep);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;}
-.menu-info{flex:1;}
-.menu-name{font-size:14px;font-weight:500;color:var(--gold-light);}
-.menu-desc{font-size:12px;color:var(--gold-muted);margin-top:2px;}
-.menu-price{font-size:14px;font-weight:500;color:var(--gold);white-space:nowrap;}
-
-/* review cards */
-.reviews-wrap{padding:0 18px 16px;display:flex;flex-direction:column;gap:10px;}
-.rev-card{background:var(--gold-surface);border-radius:12px;border:0.5px solid var(--gold-border);padding:12px;}
+.rev-wrap{padding:12px 16px;display:flex;flex-direction:column;gap:10px;}
+.rev-card{background:var(--surface);border-radius:12px;border:1px solid var(--border);padding:12px;}
 .rev-top{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
-.rev-avatar{width:32px;height:32px;border-radius:50%;background:var(--gold-deep);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:var(--gold);flex-shrink:0;}
-.rev-name{font-size:13px;font-weight:500;color:var(--gold-light);}
-.rev-date{font-size:11px;color:var(--gold-muted);}
-.rev-stars{color:var(--gold);font-size:12px;margin-left:auto;}
-.rev-text{font-size:13px;color:var(--gold-muted);line-height:1.5;}
+.rev-av{width:34px;height:34px;border-radius:50%;background:var(--gold-soft);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--gold);flex-shrink:0;}
+.rev-name{font-size:13px;font-weight:600;color:var(--text-main);}
+.rev-date{font-size:11px;color:var(--text-hint);}
+.rev-stars{margin-left:auto;color:var(--gold);font-size:12px;}
+.rev-text{font-size:13px;color:var(--text-sub);line-height:1.5;}
 
-/* ─── BRON MODAL ─── */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);align-items:flex-end;justify-content:center;z-index:200;}
-.modal-overlay.show{display:flex;}
-.modal-sheet{background:#1A1408;border-radius:20px 20px 0 0;padding:24px 18px 40px;width:100%;max-width:480px;border-top:0.5px solid var(--gold-border);}
-.modal-handle{width:36px;height:3px;border-radius:2px;background:var(--gold-border);margin:0 auto 20px;}
-.modal-title{font-size:18px;font-weight:600;color:var(--gold-light);margin-bottom:18px;text-align:center;}
-.form-label{font-size:12px;color:var(--gold-muted);margin-bottom:5px;display:block;text-transform:uppercase;letter-spacing:0.5px;}
-.form-input{width:100%;padding:11px 14px;border:0.5px solid var(--gold-border);border-radius:12px;font-size:15px;background:var(--gold-deep);color:var(--gold-light);outline:none;margin-bottom:12px;}
-.form-input:focus{border-color:var(--gold);}
-.row-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.success-wrap{text-align:center;padding:10px 0 6px;}
-.success-icon{font-size:56px;margin-bottom:10px;}
-.success-title{font-size:17px;font-weight:600;color:var(--gold-light);}
-.success-sub{font-size:13px;color:var(--gold-muted);margin-top:6px;line-height:1.5;}
+/* QR */
+.qr-wrap{display:flex;flex-direction:column;align-items:center;padding:40px 24px;text-align:center;}
+.qr-box{width:160px;height:160px;border:3px solid var(--gold);border-radius:20px;display:flex;align-items:center;justify-content:center;margin-bottom:24px;background:var(--gold-pale);}
+.qr-box svg{width:90px;height:90px;stroke:var(--gold);fill:none;stroke-width:1.5;}
+.qr-title{font-size:18px;font-weight:700;color:var(--text-main);margin-bottom:8px;}
+.qr-sub{font-size:14px;color:var(--text-sub);line-height:1.6;}
+.qr-chip{display:inline-flex;align-items:center;gap:6px;background:var(--gold-soft);border:1.5px solid var(--gold);border-radius:20px;padding:6px 16px;font-size:12px;color:var(--brown);margin-top:16px;font-weight:500;}
 
-/* ─── QR VIEW ─── */
-.qr-view-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:32px 24px;text-align:center;}
-.qr-big{width:180px;height:180px;border:2px solid var(--gold);border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;color:var(--gold);}
-.qr-title{font-size:18px;font-weight:600;color:var(--gold-light);margin-bottom:8px;}
-.qr-sub{font-size:14px;color:var(--gold-muted);line-height:1.6;}
-.qr-chip{display:inline-flex;align-items:center;gap:6px;background:var(--gold-deep);border:0.5px solid var(--gold-border);border-radius:20px;padding:6px 14px;font-size:12px;color:var(--gold);margin-top:16px;}
+/* SURVEY */
+.survey-header{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin:14px 16px;display:flex;align-items:center;gap:12px;}
+.sq{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin:0 16px 12px;}
+.sq-text{font-size:14px;font-weight:600;color:var(--text-main);margin-bottom:10px;}
+.sq-opts{display:flex;flex-direction:column;gap:8px;}
+.sq-opt{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:1.5px solid var(--border);font-size:13px;color:var(--text-sub);cursor:pointer;transition:all 0.15s;}
+.sq-opt.sel{border-color:var(--gold);color:var(--brown);background:var(--gold-pale);}
+.opt-dot{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--border);flex-shrink:0;}
+.sq-opt.sel .opt-dot{background:var(--gold);border-color:var(--gold);}
+.stars-row{display:flex;gap:8px;}
+.star{font-size:30px;cursor:pointer;color:#EDE5D8;transition:color 0.1s;}
+.star.lit{color:var(--gold);}
 
-/* ─── SURVEY VIEW ─── */
-.survey-wrap{padding:20px 18px;}
-.survey-q{background:var(--gold-surface);border-radius:14px;border:0.5px solid var(--gold-border);padding:16px;margin-bottom:12px;}
-.survey-q-text{font-size:14px;font-weight:500;color:var(--gold-light);margin-bottom:12px;}
-.survey-options{display:flex;flex-direction:column;gap:8px;}
-.survey-opt{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:0.5px solid var(--gold-border);background:var(--gold-deep);cursor:pointer;font-size:13px;color:var(--gold-muted);transition:all 0.15s;}
-.survey-opt.selected{border-color:var(--gold);color:var(--gold);background:var(--gold-surface);}
-.opt-circle{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--gold-border);flex-shrink:0;display:flex;align-items:center;justify-content:center;}
-.survey-opt.selected .opt-circle{background:var(--gold);border-color:var(--gold);}
-.star-row{display:flex;gap:8px;}
-.star-btn{font-size:28px;cursor:pointer;color:var(--gold-border);transition:color 0.1s;}
-.star-btn.lit{color:var(--gold);}
-
-/* scrollbar */
-::-webkit-scrollbar{width:0;}
+/* MAP MODAL */
+.map-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;align-items:flex-end;justify-content:center;}
+.map-overlay.show{display:flex;}
+.map-sheet{background:var(--surface);border-radius:20px 20px 0 0;width:100%;max-width:480px;overflow:hidden;}
+.map-header{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 12px;}
+.map-title{font-size:16px;font-weight:700;color:var(--text-main);}
+.map-close{width:30px;height:30px;border-radius:50%;background:var(--bg);border:none;cursor:pointer;font-size:18px;color:var(--text-sub);}
+.map-frame{width:100%;height:260px;border:none;display:block;}
+.map-info{padding:14px 16px;}
+.map-addr{font-size:13px;color:var(--text-sub);margin-bottom:12px;display:flex;align-items:flex-start;gap:6px;}
+.map-btns{display:flex;gap:10px;}
+.map-btn-go{flex:1;background:var(--gold);color:#fff;border:none;border-radius:12px;padding:11px;font-size:14px;font-weight:600;cursor:pointer;}
+.map-btn-yandex{flex:1;background:var(--gold-pale);color:var(--brown);border:1.5px solid var(--gold);border-radius:12px;padding:11px;font-size:14px;font-weight:500;cursor:pointer;}
+.map-pb{height:20px;}
+/* BRON MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:100;align-items:flex-end;justify-content:center;}
+.overlay.show{display:flex;}
+.sheet{background:var(--surface);border-radius:20px 20px 0 0;padding:24px 16px 36px;width:100%;max-width:480px;}
+.sheet-handle{width:36px;height:4px;border-radius:2px;background:var(--border);margin:0 auto 20px;}
+.sheet-title{font-size:17px;font-weight:700;color:var(--text-main);margin-bottom:18px;text-align:center;}
+.f-label{font-size:12px;color:var(--text-sub);font-weight:600;margin-bottom:5px;display:block;text-transform:uppercase;letter-spacing:0.4px;}
+.f-input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:12px;font-size:15px;color:var(--text-main);background:var(--bg);outline:none;margin-bottom:12px;}
+.f-input:focus{border-color:var(--gold);}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.success-body{text-align:center;padding:10px 0;}
+.success-emoji{font-size:56px;margin-bottom:12px;}
+.success-title{font-size:18px;font-weight:700;color:var(--text-main);}
+.success-sub{font-size:13px;color:var(--text-sub);margin-top:6px;line-height:1.6;}
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════
-     VIEW 1: ASOSIY MENYU (BENTO)
-════════════════════════════════════════════ -->
-<div class="view active" id="view-home">
-  <div class="top-bar">
-    <div class="brand">
-      <div class="brand-icon">
-        <svg width="20" height="20" fill="none" stroke="#120F06" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M3 2h1l1 7H3M19 2h1l1 7h-2M8 2v7M16 2v7M5 9a7 7 0 0014 0M12 16v6M9 22h6"/></svg>
+<!-- ══════════════ HOME ══════════════ -->
+<div class="view active" id="v-home">
+  <div class="scroll">
+
+    <!-- Banner -->
+    <div class="home-banner">
+      <div class="home-loc">
+        <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Toshkent, O'zbekiston
       </div>
-      <div>
-        <div class="brand-name">DineBook</div>
-        <div class="brand-sub">Premium restoran tarmog'i</div>
+      <div class="home-title">Bugun qayerda<br>ovqatlanasiz? 🍽️</div>
+      <div class="home-sub">24 ta hamkor restoran sizni kutmoqda</div>
+    </div>
+
+    <!-- Search -->
+    <div style="background:#fff;padding:0 0 4px;">
+      <div class="search-box" style="margin:12px 16px 0;">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input placeholder="Restoran yoki taom qidirish..." oninput="filterR(this.value)" id="homeSearch">
       </div>
     </div>
-    <div class="notif-btn">
-      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+
+    <!-- Categories -->
+    <div style="background:#fff;border-bottom:1px solid var(--border);">
+      <div class="cats" id="catRow">
+        <div class="cat active" onclick="setCat(this,'Barchasi')">
+          <div class="cat-icon">🍴</div><div class="cat-label">Barchasi</div>
+        </div>
+        <div class="cat" onclick="setCat(this,'Milliy')">
+          <div class="cat-icon">🍲</div><div class="cat-label">Milliy</div>
+        </div>
+        <div class="cat" onclick="setCat(this,'Italyan')">
+          <div class="cat-icon">🍕</div><div class="cat-label">Italyan</div>
+        </div>
+        <div class="cat" onclick="setCat(this,'Osiyo')">
+          <div class="cat-icon">🍜</div><div class="cat-label">Osiyo</div>
+        </div>
+        <div class="cat" onclick="setCat(this,'Yevropacha')">
+          <div class="cat-icon">🥩</div><div class="cat-label">Yevropacha</div>
+        </div>
+        <div class="cat" onclick="setCat(this,'Qahvaxona')">
+          <div class="cat-icon">☕</div><div class="cat-label">Qahvaxona</div>
+        </div>
+      </div>
     </div>
+
+    <!-- Promo banners -->
+    <div style="padding:14px 0 0;">
+      <div class="sec-header"><div class="sec-title">Aksiyalar</div></div>
+      <div class="promo-scroll">
+        <div class="promo-card p1">
+          <div class="promo-title">Birinchi buyurtma<br>20% chegirma!</div>
+          <div class="promo-sub">Barcha restoranlarda amal qiladi</div>
+          <div class="promo-badge">20% OFF</div>
+        </div>
+        <div class="promo-card p2">
+          <div class="promo-title">Joy bron qiling —<br>Sovg'a oling!</div>
+          <div class="promo-sub">Choy yoki desert sovg'a</div>
+          <div class="promo-badge">🎁</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Restaurants -->
+    <div class="sec-header"><div class="sec-title">Mashhur restoranlar</div><div class="sec-all">Barchasi →</div></div>
+    <div class="rest-list" id="homeList"></div>
+
   </div>
 
-  <div class="hero">
-    <div class="hero-greeting">Xush kelibsiz 👋</div>
-    <div class="hero-title">Bugun qayerda<br>ovqatlanasiz?</div>
-    <div class="hero-sub">Toshkentda 24 ta hamkor restoran</div>
-  </div>
-
-  <div class="scroll-content">
-    <div class="bento">
-
-      <div class="tile tile-hero tile-full" onclick="showView('view-catalog')">
-        <div>
-          <div class="t-label">Eng mashhur</div>
-          <div class="t-title">Restoranlar<br>katalogi</div>
-          <div class="t-sub">Menyu · Narxlar · Lokatsiya</div>
-        </div>
-        <div class="t-badge">
-          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          Ko'rish
-        </div>
-      </div>
-
-      <div class="tile tile-sm tile-accent" onclick="showModal()">
-        <div class="tile-icon-wrap">
-          <svg width="20" height="20" fill="none" stroke="#120F06" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>
-        </div>
-        <div>
-          <div class="t-title">Joy bron qilish</div>
-          <div class="t-sub">Stol buyurtma</div>
-        </div>
-        <div class="tile-arrow">
-          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
-      </div>
-
-      <div class="tile tile-sm" onclick="showView('view-catalog')">
-        <div class="tile-icon-wrap">
-          <svg width="20" height="20" fill="none" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        </div>
-        <div>
-          <div class="t-title">Yaqin atrofda</div>
-          <div class="t-sub">Lokatsiya bo'yicha</div>
-        </div>
-        <div class="tile-arrow">
-          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
-      </div>
-
-      <div class="tile tile-qr" onclick="showView('view-qr')">
-        <div class="qr-box">
-          <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h.01M18 14h.01M14 18h.01M18 18h.01M21 14v1M21 18v3h-3M17 21h-3v-4"/></svg>
-        </div>
-        <div class="t-title">QR Scan</div>
-        <div class="t-sub">Stolingizni skanerlang</div>
-      </div>
-
-      <div class="tile tile-sm" onclick="showView('view-survey')">
-        <div class="tile-icon-wrap">
-          <svg width="20" height="20" fill="none" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2M9 12l2 2 4-4"/></svg>
-        </div>
-        <div>
-          <div class="t-title">So'rovnoma</div>
-          <div class="t-sub">Fikringizni bildiring</div>
-        </div>
-        <div class="tile-arrow">
-          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
-      </div>
-
-      <div class="tile-stats">
-        <div class="stat-cell">
-          <div class="stat-dot" style="background:var(--gold);"></div>
-          <div class="stat-num" style="color:var(--gold);">24</div>
-          <div class="stat-label">Hamkor restoran</div>
-        </div>
-        <div class="stat-cell">
-          <div class="stat-dot" style="background:var(--gold-light);"></div>
-          <div class="stat-num" style="color:var(--gold-light);">4.8</div>
-          <div class="stat-label">O'rtacha reyting</div>
-        </div>
-      </div>
-
-      <div class="tile tile-wide" onclick="alert('Restoran bilan aloqa: +998 71 XXX XX XX')">
-        <div class="tile-icon-wrap">
-          <svg width="20" height="20" fill="none" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.4 12 19.79 19.79 0 011.35 3.5 2 2 0 013.33 1.3h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L7.09 9a16 16 0 006.29 6.29l1.06-1.06a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-        </div>
-        <div>
-          <div class="t-title">Restoran bilan aloqa</div>
-          <div class="t-sub">To'g'ridan to'g'ri murojaat</div>
-        </div>
-        <div class="tw-chevron">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="divider"></div>
-    <div class="section-label">Restoran egasi uchun</div>
-
-    <div class="bento" style="padding-top:10px;">
-      <div class="tile tile-wide" onclick="alert('Statistika paneli — ishlab chiqilmoqda')">
-        <div class="tile-icon-wrap">
-          <svg width="20" height="20" fill="none" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-        </div>
-        <div>
-          <div class="t-title">Mijozlar statistikasi</div>
-          <div class="t-sub">So'rovnoma natijalari</div>
-        </div>
-        <div class="tw-chevron">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
-        </div>
-      </div>
-      <div class="tile tile-wide" onclick="alert('Sozlamalar — ishlab chiqilmoqda')">
-        <div class="tile-icon-wrap">
-          <svg width="20" height="20" fill="none" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>
-        </div>
-        <div>
-          <div class="t-title">Panel sozlamalari</div>
-          <div class="t-sub">Menyu · So'rovnoma tahrirlash</div>
-        </div>
-        <div class="tw-chevron">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
-        </div>
-      </div>
-    </div>
-    <div style="height:20px;"></div>
+  <!-- Bottom tabs -->
+  <div class="tabbar">
+    <button class="tab-item active" onclick="switchTab(this,'v-home')">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Bosh</span>
+    </button>
+    <button class="tab-item" onclick="switchTab(this,'v-catalog')">
+      <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      <span>Katalog</span>
+    </button>
+    <button class="tab-item" onclick="switchTab(this,'v-qr')">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h.01M18 14h.01M14 18h.01M18 18h.01M21 14v1M21 18v3h-3M17 21h-3v-4"/></svg>
+      <span>QR Scan</span>
+    </button>
+    <button class="tab-item" onclick="switchTab(this,'v-survey')">
+      <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2M9 12l2 2 4-4"/></svg>
+      <span>So'rov</span>
+    </button>
+    <button class="tab-item" onclick="switchTab(this,'v-profile')">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Profil</span>
+    </button>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     VIEW 2: KATALOG
-════════════════════════════════════════════ -->
-<div class="view" id="view-catalog">
-  <div class="back-bar">
-    <button class="back-btn" onclick="showView('view-home')">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+<!-- ══════════════ CATALOG ══════════════ -->
+<div class="view" id="v-catalog">
+  <div class="navbar">
+    <div class="navbar-brand">
+      <div class="logo-dot"><svg viewBox="0 0 24 24"><path d="M3 2h1l1 7H3M19 2h1l1 7h-2M8 2v7M16 2v7M5 9a7 7 0 0014 0M12 16v6M9 22h6"/></svg></div>
+      <span class="brand-name">DineBook</span>
+    </div>
+    <div class="nav-icon-btn"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+  </div>
+  <div style="padding:10px 16px;background:#fff;border-bottom:1px solid var(--border);">
+    <input class="f-input" style="margin:0;" placeholder="Restoran qidirish..." oninput="filterR(this.value)">
+  </div>
+  <div class="scroll">
+    <div class="rest-list" style="padding-top:14px;" id="catList"></div>
+  </div>
+  <div class="tabbar" id="tabbar2"></div>
+</div>
+
+<!-- ══════════════ DETAIL ══════════════ -->
+<div class="view" id="v-detail">
+  <div class="back-nav">
+    <button class="back-btn" onclick="goBack()">
+      <svg viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
       Orqaga
     </button>
-    <span class="back-title">Restoranlar</span>
+    <span class="back-nav-title" id="dName"></span>
   </div>
-  <div class="search-wrap" style="position:relative;">
-    <div style="position:relative;">
-      <span class="search-icon" style="top:50%;transform:translateY(-50%);left:12px;">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-      </span>
-      <input class="search-input" placeholder="Restoran qidirish..." oninput="filterRest(this.value)" id="restSearch">
+  <div class="scroll" id="dContent"></div>
+</div>
+
+<!-- ══════════════ QR ══════════════ -->
+<div class="view" id="v-qr">
+  <div class="navbar">
+    <div class="navbar-brand"><div class="logo-dot"><svg viewBox="0 0 24 24"><path d="M3 2h1l1 7H3M19 2h1l1 7h-2M8 2v7M16 2v7M5 9a7 7 0 0014 0M12 16v6M9 22h6"/></svg></div><span class="brand-name">DineBook</span></div>
+  </div>
+  <div class="scroll">
+    <div class="qr-wrap">
+      <div class="qr-box">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h.01M18 14h.01M14 18h.01M18 18h.01M21 14v1M21 18v3h-3M17 21h-3v-4"/></svg>
+      </div>
+      <div class="qr-title">Stol QR kodini skanerlang</div>
+      <div class="qr-sub">Restorandagi har bir stolda QR kod bor. Skanerlang va so'rovnomani to'ldiring — fikringiz restoran egasiga tezda yetib boradi.</div>
+      <div class="qr-chip">🔒 Telegram bot orqali xavfsiz ishlaydi</div>
+      <button class="btn-primary" style="margin-top:24px;width:100%;max-width:280px;" onclick="goView('v-survey')">So'rovnomani ochish →</button>
     </div>
   </div>
-  <div class="tabs" id="catTabs">
-    <div class="tab-pill active" onclick="setTab(this,'Barchasi')">Barchasi</div>
-    <div class="tab-pill" onclick="setTab(this,'Milliy')">Milliy</div>
-    <div class="tab-pill" onclick="setTab(this,'Italyan')">Italyan</div>
-    <div class="tab-pill" onclick="setTab(this,'Osiyo')">Osiyo</div>
-    <div class="tab-pill" onclick="setTab(this,'Yevropacha')">Yevropacha</div>
+  <div class="tabbar" id="tabbar3"></div>
+</div>
+
+<!-- ══════════════ SURVEY ══════════════ -->
+<div class="view" id="v-survey">
+  <div class="navbar"><div class="navbar-brand"><div class="logo-dot"><svg viewBox="0 0 24 24"><path d="M3 2h1l1 7H3M19 2h1l1 7h-2M8 2v7M16 2v7M5 9a7 7 0 0014 0M12 16v6M9 22h6"/></svg></div><span class="brand-name">DineBook</span></div></div>
+  <div class="scroll" id="surveyContent">
+    <div class="survey-header">
+      <div style="font-size:32px;">🏛️</div>
+      <div><div style="font-size:14px;font-weight:700;color:var(--text-main);">Navro'z Palace</div><div style="font-size:12px;color:var(--text-sub);">Stol №7 · Chilonzor</div></div>
+    </div>
+    <div class="sq">
+      <div class="sq-text">Umumiy taassurotingizni baholang</div>
+      <div class="stars-row" id="stars1">
+        <span class="star" onclick="setStar('stars1',1)">★</span>
+        <span class="star" onclick="setStar('stars1',2)">★</span>
+        <span class="star" onclick="setStar('stars1',3)">★</span>
+        <span class="star" onclick="setStar('stars1',4)">★</span>
+        <span class="star" onclick="setStar('stars1',5)">★</span>
+      </div>
+    </div>
+    <div class="sq">
+      <div class="sq-text">Taom sifati qanday edi?</div>
+      <div class="sq-opts">
+        <div class="sq-opt" onclick="pick(this)"><div class="opt-dot"></div>Juda yaxshi 😍</div>
+        <div class="sq-opt" onclick="pick(this)"><div class="opt-dot"></div>Yaxshi 😊</div>
+        <div class="sq-opt" onclick="pick(this)"><div class="opt-dot"></div>O'rtacha 😐</div>
+        <div class="sq-opt" onclick="pick(this)"><div class="opt-dot"></div>Yomon 😞</div>
+      </div>
+    </div>
+    <div class="sq">
+      <div class="sq-text">Xizmat ko'rsatish qanday edi?</div>
+      <div class="sq-opts">
+        <div class="sq-opt" onclick="pick(this)"><div class="opt-dot"></div>Juda yaxshi 👌</div>
+        <div class="sq-opt" onclick="pick(this)"><div class="opt-dot"></div>Yaxshi</div>
+        <div class="sq-opt" onclick="pick(this)"><div class="opt-dot"></div>O'rtacha</div>
+        <div class="sq-opt" onclick="pick(this)"><div class="opt-dot"></div>Yomon</div>
+      </div>
+    </div>
+    <div class="sq">
+      <div class="sq-text">Yana qaytib kelasizmi?</div>
+      <div class="sq-opts">
+        <div class="sq-opt" onclick="pick(this)"><div class="opt-dot"></div>Ha, albatta! 🔥</div>
+        <div class="sq-opt" onclick="pick(this)"><div class="opt-dot"></div>Ehtimol</div>
+        <div class="sq-opt" onclick="pick(this)"><div class="opt-dot"></div>Yo'q</div>
+      </div>
+    </div>
+    <div class="sq">
+      <div class="sq-text">Izoh yoki taklif</div>
+      <textarea class="f-input" rows="3" placeholder="Fikringizni yozing..." style="resize:none;margin:0;"></textarea>
+    </div>
+    <div style="padding:4px 16px 32px;">
+      <button class="btn-primary" style="width:100%;" onclick="submitSurvey()">Yuborish →</button>
+    </div>
   </div>
-  <div class="scroll-content">
-    <div class="rest-list" id="restList"></div>
+  <div class="tabbar" id="tabbar4"></div>
+</div>
+
+<!-- ══════════════ PROFILE ══════════════ -->
+<div class="view" id="v-profile">
+  <div class="navbar"><div class="navbar-brand"><div class="logo-dot"><svg viewBox="0 0 24 24"><path d="M3 2h1l1 7H3M19 2h1l1 7h-2M8 2v7M16 2v7M5 9a7 7 0 0014 0M12 16v6M9 22h6"/></svg></div><span class="brand-name">DineBook</span></div></div>
+  <div class="scroll">
+    <div style="background:var(--gold);padding:28px 20px 32px;text-align:center;">
+      <div style="width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,0.25);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:32px;">👤</div>
+      <div style="font-size:18px;font-weight:700;color:#fff;">Mehmon foydalanuvchi</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.8);margin-top:3px;">Toshkent</div>
+    </div>
+    <div style="padding:16px;">
+      <div style="background:var(--surface);border-radius:14px;border:1px solid var(--border);overflow:hidden;">
+        <div onclick="showModal()" style="display:flex;align-items:center;padding:14px 16px;border-bottom:1px solid var(--border);cursor:pointer;">
+          <span style="font-size:20px;margin-right:12px;">📅</span>
+          <div style="flex:1;"><div style="font-size:14px;font-weight:600;color:var(--text-main);">Mening bronlarim</div><div style="font-size:12px;color:var(--text-sub);">Faol buyurtmalar</div></div>
+          <span style="color:var(--text-hint);font-size:18px;">›</span>
+        </div>
+        <div style="display:flex;align-items:center;padding:14px 16px;border-bottom:1px solid var(--border);cursor:pointer;">
+          <span style="font-size:20px;margin-right:12px;">❤️</span>
+          <div style="flex:1;"><div style="font-size:14px;font-weight:600;color:var(--text-main);">Sevimli restoranlar</div><div style="font-size:12px;color:var(--text-sub);">Saqlanganlar</div></div>
+          <span style="color:var(--text-hint);font-size:18px;">›</span>
+        </div>
+        <div style="display:flex;align-items:center;padding:14px 16px;cursor:pointer;">
+          <span style="font-size:20px;margin-right:12px;">⚙️</span>
+          <div style="flex:1;"><div style="font-size:14px;font-weight:600;color:var(--text-main);">Sozlamalar</div><div style="font-size:12px;color:var(--text-sub);">Til, bildirishnomalar</div></div>
+          <span style="color:var(--text-hint);font-size:18px;">›</span>
+        </div>
+      </div>
+      <!-- Restoran egasi -->
+      <div style="margin-top:14px;background:var(--gold-pale);border-radius:14px;border:1.5px solid var(--gold);padding:16px;">
+        <div style="font-size:13px;font-weight:700;color:var(--brown);margin-bottom:8px;">Restoran egasi uchun</div>
+        <div style="display:flex;gap:10px;">
+          <div style="flex:1;background:var(--surface);border-radius:10px;padding:12px;text-align:center;border:1px solid var(--border);">
+            <div style="font-size:22px;font-weight:700;color:var(--gold);">247</div>
+            <div style="font-size:11px;color:var(--text-sub);">So'rovnomalar</div>
+          </div>
+          <div style="flex:1;background:var(--surface);border-radius:10px;padding:12px;text-align:center;border:1px solid var(--border);">
+            <div style="font-size:22px;font-weight:700;color:var(--gold);">4.8⭐</div>
+            <div style="font-size:11px;color:var(--text-sub);">Reyting</div>
+          </div>
+          <div style="flex:1;background:var(--surface);border-radius:10px;padding:12px;text-align:center;border:1px solid var(--border);">
+            <div style="font-size:22px;font-weight:700;color:var(--gold);">38</div>
+            <div style="font-size:11px;color:var(--text-sub);">Bron</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tabbar" id="tabbar5"></div>
+</div>
+
+<!-- MAP MODAL -->
+<div class="map-overlay" id="mapOverlay">
+  <div class="map-sheet">
+    <div class="map-header">
+      <div class="map-title" id="mapTitle">Restoran joylashuvi</div>
+      <button class="map-close" onclick="closeMap()">✕</button>
+    </div>
+    <iframe class="map-frame" id="mapFrame" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <div class="map-info">
+      <div class="map-addr">📍 <span id="mapAddr"></span></div>
+      <div class="map-btns">
+        <button class="map-btn-go" onclick="openGoogleMaps()">🗺 Google Maps</button>
+        <button class="map-btn-yandex" onclick="openYandexMaps()">🗺 Yandex Maps</button>
+      </div>
+    </div>
+    <div class="map-pb"></div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     VIEW 3: RESTORAN DETAIL
-════════════════════════════════════════════ -->
-<div class="view" id="view-detail">
-  <div class="back-bar">
-    <button class="back-btn" onclick="showView('view-catalog')">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-      Orqaga
-    </button>
-    <span class="back-title" id="detailName">—</span>
-  </div>
-  <div class="scroll-content" id="detailContent"></div>
-</div>
-
-<!-- ═══════════════════════════════════════════
-     VIEW 4: QR SCAN
-════════════════════════════════════════════ -->
-<div class="view" id="view-qr">
-  <div class="back-bar">
-    <button class="back-btn" onclick="showView('view-home')">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-      Orqaga
-    </button>
-    <span class="back-title">QR Scan</span>
-  </div>
-  <div class="qr-view-wrap">
-    <div class="qr-big">
-      <svg width="100" height="100" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h.01M18 14h.01M14 18h.01M18 18h.01M21 14v1M21 18v3h-3M17 21h-3v-4"/></svg>
-    </div>
-    <div class="qr-title">Stol QR kodini skanerlang</div>
-    <div class="qr-sub">Restorandagi har bir stolda QR kod mavjud. Skanerlang va so'rovnomani to'ldiring — fikringiz restoran egasiga yetib boradi.</div>
-    <div class="qr-chip">
-      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      Telegram bot orqali ishlaydi
-    </div>
-    <div style="margin-top:24px;width:100%;">
-      <button class="btn-gold" style="width:100%;" onclick="showView('view-survey')">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2M9 12l2 2 4-4"/></svg>
-        So'rovnomani ochish
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════
-     VIEW 5: SO'ROVNOMA
-════════════════════════════════════════════ -->
-<div class="view" id="view-survey">
-  <div class="back-bar">
-    <button class="back-btn" onclick="showView('view-home')">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-      Orqaga
-    </button>
-    <span class="back-title">Mijoz so'rovnomasi</span>
-  </div>
-  <div class="scroll-content">
-    <div class="survey-wrap">
-      <div style="background:var(--gold-surface);border-radius:14px;border:0.5px solid var(--gold-border);padding:14px;margin-bottom:16px;display:flex;align-items:center;gap:10px;">
-        <div style="font-size:28px;">🏛️</div>
-        <div>
-          <div style="font-size:14px;font-weight:500;color:var(--gold-light);">Navro'z Palace</div>
-          <div style="font-size:12px;color:var(--gold-muted);">Stol №7 · Chilonzor</div>
-        </div>
-      </div>
-
-      <div class="survey-q">
-        <div class="survey-q-text">Umumiy taassurotingizni baholang</div>
-        <div class="star-row" id="stars1">
-          <span class="star-btn" onclick="setStar('stars1',1)">★</span>
-          <span class="star-btn" onclick="setStar('stars1',2)">★</span>
-          <span class="star-btn" onclick="setStar('stars1',3)">★</span>
-          <span class="star-btn" onclick="setStar('stars1',4)">★</span>
-          <span class="star-btn" onclick="setStar('stars1',5)">★</span>
-        </div>
-      </div>
-
-      <div class="survey-q">
-        <div class="survey-q-text">Taom sifati qanday edi?</div>
-        <div class="survey-options">
-          <div class="survey-opt" onclick="pickOpt(this)"><div class="opt-circle"></div>Juda yaxshi</div>
-          <div class="survey-opt" onclick="pickOpt(this)"><div class="opt-circle"></div>Yaxshi</div>
-          <div class="survey-opt" onclick="pickOpt(this)"><div class="opt-circle"></div>O'rtacha</div>
-          <div class="survey-opt" onclick="pickOpt(this)"><div class="opt-circle"></div>Yomon</div>
-        </div>
-      </div>
-
-      <div class="survey-q">
-        <div class="survey-q-text">Xizmat ko'rsatish qanday edi?</div>
-        <div class="survey-options">
-          <div class="survey-opt" onclick="pickOpt(this)"><div class="opt-circle"></div>Juda yaxshi</div>
-          <div class="survey-opt" onclick="pickOpt(this)"><div class="opt-circle"></div>Yaxshi</div>
-          <div class="survey-opt" onclick="pickOpt(this)"><div class="opt-circle"></div>O'rtacha</div>
-          <div class="survey-opt" onclick="pickOpt(this)"><div class="opt-circle"></div>Yomon</div>
-        </div>
-      </div>
-
-      <div class="survey-q">
-        <div class="survey-q-text">Yana qaytib kelasizmi?</div>
-        <div class="survey-options">
-          <div class="survey-opt" onclick="pickOpt(this)"><div class="opt-circle"></div>Ha, albatta!</div>
-          <div class="survey-opt" onclick="pickOpt(this)"><div class="opt-circle"></div>Ehtimol</div>
-          <div class="survey-opt" onclick="pickOpt(this)"><div class="opt-circle"></div>Yo'q</div>
-        </div>
-      </div>
-
-      <div class="survey-q">
-        <div class="survey-q-text">Izoh yoki taklif (ixtiyoriy)</div>
-        <textarea class="form-input" rows="3" placeholder="Fikringizni yozing..." style="resize:none;margin-bottom:0;"></textarea>
-      </div>
-
-      <button class="btn-gold" style="width:100%;margin-top:4px;" onclick="submitSurvey()">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg>
-        Yuborish
-      </button>
-      <div style="height:16px;"></div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════
-     BRON MODAL
-════════════════════════════════════════════ -->
-<div class="modal-overlay" id="bronModal">
-  <div class="modal-sheet">
-    <div class="modal-handle"></div>
+<!-- BRON MODAL -->
+<div class="overlay" id="bronOverlay">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
     <div id="bronInner">
-      <div class="modal-title">Joy bron qilish</div>
-      <label class="form-label">Ismingiz</label>
-      <input class="form-input" type="text" placeholder="Ism Familiya" id="bronName">
-      <div class="row-2">
-        <div>
-          <label class="form-label">Sana</label>
-          <input class="form-input" type="date" id="bronDate">
-        </div>
-        <div>
-          <label class="form-label">Vaqt</label>
-          <input class="form-input" type="time" id="bronTime">
-        </div>
+      <div class="sheet-title">Joy bron qilish 📅</div>
+      <label class="f-label">Ismingiz</label>
+      <input class="f-input" type="text" placeholder="Ism Familiya" id="bName">
+      <div class="grid2">
+        <div><label class="f-label">Sana</label><input class="f-input" type="date" id="bDate"></div>
+        <div><label class="f-label">Vaqt</label><input class="f-input" type="time" id="bTime"></div>
       </div>
-      <label class="form-label">Mehmonlar soni</label>
-      <input class="form-input" type="number" min="1" max="20" placeholder="2" id="bronGuests">
-      <label class="form-label">Izoh</label>
-      <input class="form-input" type="text" placeholder="Maxsus xohish..." id="bronNote">
-      <button class="btn-gold" style="width:100%;margin-top:4px;" onclick="submitBron()">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-        Tasdiqlash
-      </button>
-      <button onclick="closeModal()" style="width:100%;margin-top:10px;background:none;border:0.5px solid var(--gold-border);border-radius:12px;padding:12px;color:var(--gold-muted);font-size:14px;cursor:pointer;">Bekor qilish</button>
+      <label class="f-label">Mehmonlar soni</label>
+      <input class="f-input" type="number" min="1" max="20" placeholder="2" id="bGuests">
+      <label class="f-label">Izoh</label>
+      <input class="f-input" type="text" placeholder="Maxsus xohish..." id="bNote">
+      <button class="btn-primary" style="width:100%;margin-top:4px;" onclick="submitBron()">Tasdiqlash ✓</button>
+      <button onclick="closeModal()" style="width:100%;margin-top:10px;background:none;border:1.5px solid var(--border);border-radius:12px;padding:11px;color:var(--text-sub);font-size:14px;cursor:pointer;">Bekor qilish</button>
     </div>
   </div>
 </div>
 
 <script>
-const restaurants = [
-  {id:1,emoji:'🏛️',name:"Navro'z Palace",cat:'Milliy',loc:'Chilonzor, Toshkent',rating:4.8,reviews:124,hours:'10:00–23:00',tags:['Milliy taom','Banket','Karaoke'],
-    menu:[{e:'🍲',n:'Palov',d:'Klassik o\'zbek oshi',p:'35 000'},
-          {e:'🥙',n:'Shashlik',d:"Qo'y go'shti",p:'45 000'},
-          {e:'🫕',n:'Lagmon',d:'Qo\'lda tayyorlangan',p:'28 000'},
-          {e:'🫖',n:"Ko'k choy",d:'Chinni piyolada',p:'8 000'}],
-    revs:[{n:'Jasur T.',dt:'12 iyun',s:5,t:'Palov juda mazali edi! Xizmat a\'lo darajada.'},
-          {n:'Dilnoza M.',dt:'10 iyun',s:5,t:'Banket xonamiz hammaga yoqdi. Albatta qaytamiz!'},
-          {n:'Bobur A.',dt:'8 iyun',s:4,t:'Taom mazali, lekin kutish biroz uzun.'}]},
-  {id:2,emoji:'🍕',name:'Bella Roma',cat:'Italyan',loc:'Yakkasaroy, Toshkent',rating:4.6,reviews:89,hours:'12:00–24:00',tags:['Italyan','Pizza','Pasta'],
-    menu:[{e:'🍕',n:'Margherita',d:'Klassik italyan pitsasi',p:'55 000'},
-          {e:'🍝',n:'Carbonara',d:'Qaymoqli pasta',p:'48 000'},
-          {e:'🥗',n:'Caesar salati',d:'Parmezan bilan',p:'38 000'},
-          {e:'🍰',n:'Tiramisu',d:'Italyan deserti',p:'32 000'}],
-    revs:[{n:'Kamola R.',dt:'11 iyun',s:5,t:'Pizza hayotimda eyganlarimning eng mazalisi!'},
-          {n:'Sherzod N.',dt:'9 iyun',s:4,t:'Atmosfera zo\'r, narx-navo munosib.'}]},
-  {id:3,emoji:'🍜',name:'Tokyo Garden',cat:'Osiyo',loc:"Mirzo Ulug'bek, Toshkent",rating:4.7,reviews:76,hours:'11:00–22:30',tags:['Yapon','Sushi','Ramen'],
-    menu:[{e:'🍣',n:'Sushi set',d:'20 ta assorted',p:'85 000'},
-          {e:'🍜',n:'Tonkotsu ramen',d:"Qo'y suyagi buloni",p:'52 000'},
-          {e:'🥟',n:'Gyoza',d:'6 ta, qovurilgan',p:'35 000'},
-          {e:'🧋',n:'Matcha latte',d:'Yapon uslubida',p:'22 000'}],
-    revs:[{n:'Feruza B.',dt:'13 iyun',s:5,t:'Sushi yangi va mazali. Xizmat tez.'},
-          {n:'Ulugbek X.',dt:'7 iyun',s:4,t:'Ramen zo\'r, ammo biroz qimmat.'}]},
-  {id:4,emoji:'🥩',name:'Steak House Premium',cat:'Yevropacha',loc:'Shayxontohur, Toshkent',rating:4.9,reviews:201,hours:'13:00–00:00',tags:['Yevropacha','Steak','Bar'],
-    menu:[{e:'🥩',n:'Ribeye steak',d:'300g, medium rare',p:'135 000'},
-          {e:'🥗',n:'Greek salati',d:'Feta bilan',p:'42 000'},
-          {e:'🥔',n:'Kartoshka fri',d:'Sous bilan',p:'25 000'},
-          {e:'🍷',n:'Uzum sharbati',d:'Yangi siqilgan',p:'28 000'}],
-    revs:[{n:'Sanjar A.',dt:'12 iyun',s:5,t:"Eng yaxshi steak Toshkentda! Premium sifat."},
-          {n:'Malika U.',dt:'10 iyun',s:5,t:'Taom va atmosfera mukammal.'},
-          {n:'Davron S.',dt:'6 iyun',s:5,t:'Bar juda zo\'r. Romantik kecha uchun ideal.'}]},
+const R=[
+  {id:1,e:'🏛️',n:"Navro'z Palace",c:'Milliy',l:'Chilonzor, Toshkent',addr:"Chilonzor tumani, Toshkent",lat:41.2856,lng:69.2038,rt:4.8,rv:124,h:'10:00–23:00',t:['Milliy','Banket','Karaoke'],
+    m:[{e:'🍲',n:'Palov',d:"Klassik o'zbek oshi",p:'35 000'},{e:'🥙',n:'Shashlik',d:"Qo'y go'shti",p:'45 000'},{e:'🫕',n:'Lagmon',d:"Qo'lda tayyorlangan",p:'28 000'},{e:'🫖',n:"Ko'k choy",d:'Chinni piyolada',p:'8 000'}],
+    r:[{n:'Jasur T.',d:'12 iyun',s:5,t:"Palov juda mazali edi! Xizmat a'lo."},{n:'Dilnoza M.',d:'10 iyun',s:5,t:'Banket xonamiz hammaga yoqdi!'},{n:'Bobur A.',d:'8 iyun',s:4,t:'Taom mazali, lekin kutish biroz uzun.'}]},
+  {id:2,e:'🍕',n:'Bella Roma',c:'Italyan',l:'Yakkasaroy, Toshkent',addr:"Yakkasaroy tumani, Toshkent",lat:41.2995,lng:69.2401,rt:4.6,rv:89,h:'12:00–24:00',t:['Italyan','Pizza','Pasta'],
+    m:[{e:'🍕',n:'Margherita',d:'Klassik italyan pitsasi',p:'55 000'},{e:'🍝',n:'Carbonara',d:'Qaymoqli pasta',p:'48 000'},{e:'🥗',n:'Caesar salati',d:'Parmezan bilan',p:'38 000'},{e:'🍰',n:'Tiramisu',d:'Italyan deserti',p:'32 000'}],
+    r:[{n:'Kamola R.',d:'11 iyun',s:5,t:'Pizza hayotimda eyganlarimning eng mazalisi!'},{n:'Sherzod N.',d:'9 iyun',s:4,t:"Atmosfera zo'r, narx-navo munosib."}]},
+  {id:3,e:'🍜',n:'Tokyo Garden',c:'Osiyo',l:"Mirzo Ulug'bek, Toshkent",addr:"Mirzo Ulug'bek tumani, Toshkent",lat:41.3412,lng:69.3156,rt:4.7,rv:76,h:'11:00–22:30',t:['Yapon','Sushi','Ramen'],
+    m:[{e:'🍣',n:'Sushi set',d:'20 ta assorted',p:'85 000'},{e:'🍜',n:'Tonkotsu ramen',d:"Qo'y suyagi buloni",p:'52 000'},{e:'🥟',n:'Gyoza',d:'6 ta qovurilgan',p:'35 000'},{e:'🧋',n:'Matcha latte',d:'Yapon uslubida',p:'22 000'}],
+    r:[{n:'Feruza B.',d:'13 iyun',s:5,t:'Sushi yangi va mazali.'},{n:'Ulugbek X.',d:'7 iyun',s:4,t:"Ramen zo'r, ammo biroz qimmat."}]},
+  {id:4,e:'🥩',n:'Steak House Premium',c:'Yevropacha',l:'Shayxontohur, Toshkent',addr:"Shayxontohur tumani, Toshkent",lat:41.3111,lng:69.2789,rt:4.9,rv:201,h:'13:00–00:00',t:['Yevropacha','Steak','Bar'],
+    m:[{e:'🥩',n:'Ribeye steak',d:'300g, medium rare',p:'135 000'},{e:'🥗',n:'Greek salati',d:'Feta bilan',p:'42 000'},{e:'🥔',n:'Kartoshka fri',d:'Sous bilan',p:'25 000'},{e:'🍷',n:'Uzum sharbati',d:'Yangi siqilgan',p:'28 000'}],
+    r:[{n:'Sanjar A.',d:'12 iyun',s:5,t:"Eng yaxshi steak Toshkentda!"},{n:'Malika U.',d:'10 iyun',s:5,t:"Taom va atmosfera mukammal. Tavsiya qilaman!"},{n:'Davron S.',d:'6 iyun',s:5,t:"Bar juda zo'r. Romantik kecha uchun ideal."}]},
 ];
 
-let currentCat='Barchasi', currentSearch='';
+let curCat='Barchasi', curQ='', prevView='v-home';
 
-function showView(id){
+const tabHTML=`
+<button class="tab-item" onclick="switchTab(this,'v-home')"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Bosh</span></button>
+<button class="tab-item" onclick="switchTab(this,'v-catalog')"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg><span>Katalog</span></button>
+<button class="tab-item" onclick="switchTab(this,'v-qr')"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h.01M18 14h.01M14 18h.01M18 18h.01M21 14v1M21 18v3h-3M17 21h-3v-4"/></svg><span>QR Scan</span></button>
+<button class="tab-item" onclick="switchTab(this,'v-survey')"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2M9 12l2 2 4-4"/></svg><span>So'rov</span></button>
+<button class="tab-item" onclick="switchTab(this,'v-profile')"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Profil</span></button>`;
+
+['tabbar2','tabbar3','tabbar4','tabbar5'].forEach(id=>{document.getElementById(id).innerHTML=tabHTML;});
+
+function goView(id){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  window.scrollTo(0,0);
-  if(id==='view-catalog') renderList();
 }
 
-function setTab(el,cat){
-  document.querySelectorAll('.tab-pill').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  currentCat=cat;
-  renderList();
-}
-
-function filterRest(val){currentSearch=val;renderList();}
-
-function renderList(){
-  const q=currentSearch.toLowerCase();
-  const data=restaurants.filter(r=>{
-    const mt=currentCat==='Barchasi'||r.cat===currentCat;
-    const ms=r.name.toLowerCase().includes(q)||r.loc.toLowerCase().includes(q);
-    return mt&&ms;
+function switchTab(el,vId){
+  prevView=vId;
+  goView(vId);
+  document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-item').forEach(t=>{
+    if(t.getAttribute('onclick')&&t.getAttribute('onclick').includes(vId))t.classList.add('active');
   });
-  document.getElementById('restList').innerHTML=data.map(r=>`
-    <div class="rest-card" onclick="openDetail(${r.id})">
-      <div class="rest-emoji">${r.emoji}</div>
-      <div class="rest-body">
-        <div class="rest-name">${r.name}</div>
-        <div class="rest-meta">
-          <span class="rest-rating">★ ${r.rating}</span>
-          <span>💬 ${r.reviews} izoh</span>
-          <span>📍 ${r.loc.split(',')[0]}</span>
-        </div>
-        <div class="rest-tags">${r.tags.map(t=>`<span class="rest-tag">${t}</span>`).join('')}</div>
-      </div>
-    </div>`).join('');
+  if(vId==='v-catalog') renderList('catList');
 }
+
+function renderCard(r){
+  return`<div class="rcard" onclick="openDetail(${r.id})">
+    <div class="rcard-img">${r.e}<div class="rcard-badge">⭐ ${r.rt}</div><div class="rcard-fav"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
+    <div class="rcard-body">
+      <div class="rcard-name">${r.n}</div>
+      <div class="rcard-row"><span class="rcard-rating">★ ${r.rt}</span><span>💬 ${r.rv} izoh</span><span onclick="event.stopPropagation();openMap(${r.lat},${r.lng},'${r.n.replace(/'/g,"\\'")}','${r.addr}')" style="color:var(--gold);cursor:pointer;text-decoration:underline;text-decoration-color:var(--gold);">📍 ${r.l.split(',')[0]}</span></div>
+      <div class="rcard-tags">${r.t.map(x=>`<span class="rtag">${x}</span>`).join('')}</div>
+    </div>
+    <div class="rcard-footer"><span class="rcard-time"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>${r.h}</span><span class="rcard-open">● Ochiq</span></div>
+  </div>`;
+}
+
+function renderList(id){
+  const q=curQ.toLowerCase();
+  const data=R.filter(r=>(curCat==='Barchasi'||r.c===curCat)&&(r.n.toLowerCase().includes(q)||r.l.toLowerCase().includes(q)));
+  document.getElementById(id).innerHTML=data.map(renderCard).join('');
+}
+
+function setCat(el,cat){
+  document.querySelectorAll('.cat').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  curCat=cat;
+  renderList('homeList');
+}
+function filterR(v){curQ=v;renderList('homeList');if(document.getElementById('catList'))renderList('catList');}
 
 function openDetail(id){
-  const r=restaurants.find(x=>x.id===id);
-  document.getElementById('detailName').textContent=r.name;
-  const menuHTML=r.menu.map(m=>`
-    <div class="menu-item">
-      <div class="menu-emoji">${m.e}</div>
-      <div class="menu-info">
-        <div class="menu-name">${m.n}</div>
-        <div class="menu-desc">${m.d}</div>
-      </div>
-      <div class="menu-price">${m.p} so'm</div>
-    </div>`).join('');
-  const revHTML=r.revs.map(rv=>`
-    <div class="rev-card">
-      <div class="rev-top">
-        <div class="rev-avatar">${rv.n.split(' ').map(x=>x[0]).join('')}</div>
-        <div><div class="rev-name">${rv.n}</div><div class="rev-date">${rv.dt}</div></div>
-        <div class="rev-stars">${'★'.repeat(rv.s)}</div>
-      </div>
-      <div class="rev-text">${rv.t}</div>
-    </div>`).join('');
-  document.getElementById('detailContent').innerHTML=`
-    <div class="detail-hero">${r.emoji}</div>
+  const r=R.find(x=>x.id===id);
+  prevView=document.querySelector('.view.active').id;
+  document.getElementById('dName').textContent=r.n;
+  document.getElementById('dContent').innerHTML=`
+    <div class="detail-img">${r.e}</div>
     <div class="detail-info">
-      <div class="detail-name">${r.name}</div>
-      <div class="detail-rating-row">
-        <span class="d-stars">${'★'.repeat(Math.floor(r.rating))}</span>
-        <span class="d-rnum">${r.rating}</span>
-        <span class="d-rcount">(${r.reviews} izoh)</span>
+      <div class="detail-name">${r.n}</div>
+      <div class="detail-rating"><span class="d-stars">${'★'.repeat(Math.floor(r.rt))}</span><span style="font-size:14px;font-weight:600;color:var(--text-main);margin-left:4px;">${r.rt}</span><span class="d-count">(${r.rv} izoh)</span></div>
+      <div class="detail-meta" style="cursor:pointer;" onclick="openMap(${r.lat},${r.lng},'${r.n.replace(/'/g,"\\'")}','${r.addr}')">
+        <span style="color:var(--gold);font-weight:500;display:flex;align-items:center;gap:4px;">
+          📍 <span style="text-decoration:underline;text-decoration-color:var(--gold);">${r.l}</span>
+          <span style="font-size:11px;background:var(--gold-pale);color:var(--brown);border:1px solid var(--gold);border-radius:6px;padding:1px 6px;margin-left:2px;">Xaritada ko'rish</span>
+        </span>
+        <span>⏱ ${r.h}</span>
       </div>
-      <div class="detail-loc">📍 ${r.loc}</div>
-      <div class="detail-hours">🕐 Bugun: ${r.hours}</div>
+      <div class="detail-open">● Bugun ochiq</div>
     </div>
-    <div class="action-row">
-      <button class="btn-gold" onclick="showModal()">📅 Joy bron qilish</button>
-      <button class="btn-outline-gold" onclick="alert('Aloqa: +998 71 XXX XX XX')">📞 Aloqa</button>
+    <div class="action-btns">
+      <button class="btn-primary" onclick="showModal()">📅 Joy bron qilish</button>
+      <button class="btn-secondary" onclick="alert('Telefon: +998 71 XXX XX XX')">📞 Aloqa</button>
     </div>
-    <div class="sec-title">🍽️ Menyu</div>
-    ${menuHTML}
-    <div class="sec-title">💬 Mijozlar izohlari</div>
-    <div class="reviews-wrap">${revHTML}</div>
+    <div class="menu-cats"><div class="mcpill active">Hammasi</div><div class="mcpill">Asosiy</div><div class="mcpill">Ichimliklar</div><div class="mcpill">Dessert</div></div>
+    <div style="background:var(--bg);padding:8px 0 0;">
+      ${r.m.map(m=>`<div class="menu-item"><div class="mi-emoji">${m.e}</div><div class="mi-info"><div class="mi-name">${m.n}</div><div class="mi-desc">${m.d}</div><div class="mi-price">${m.p} so'm</div></div><button class="mi-add">+</button></div>`).join('')}
+    </div>
+    <div style="padding:14px 16px 4px;"><div class="sec-title">Mijozlar izohlari</div></div>
+    <div class="rev-wrap">
+      ${r.r.map(rv=>`<div class="rev-card"><div class="rev-top"><div class="rev-av">${rv.n.split(' ').map(x=>x[0]).join('')}</div><div><div class="rev-name">${rv.n}</div><div class="rev-date">${rv.d}</div></div><div class="rev-stars">${'★'.repeat(rv.s)}</div></div><div class="rev-text">${rv.t}</div></div>`).join('')}
+    </div>
     <div style="height:24px;"></div>`;
-  showView('view-detail');
+  goView('v-detail');
 }
 
-function showModal(){
-  document.getElementById('bronModal').classList.add('show');
-  document.getElementById('bronDate').value=new Date().toISOString().split('T')[0];
+function goBack(){goView(prevView||'v-home');}
+
+let curMapLat=0, curMapLng=0, curMapName='', curMapAddr='';
+
+function openMap(lat,lng,name,addr){
+  curMapLat=lat; curMapLng=lng; curMapName=name; curMapAddr=addr;
+  document.getElementById('mapTitle').textContent=name;
+  document.getElementById('mapAddr').textContent=addr;
+  document.getElementById('mapFrame').src=
+    `https://www.google.com/maps/embed/v1/place?key=AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY&q=${lat},${lng}&zoom=15&language=uz`;
+  document.getElementById('mapOverlay').classList.add('show');
 }
-function closeModal(){document.getElementById('bronModal').classList.remove('show');}
-document.getElementById('bronModal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+function closeMap(){
+  document.getElementById('mapOverlay').classList.remove('show');
+  document.getElementById('mapFrame').src='';
+}
+function openGoogleMaps(){window.open(`https://www.google.com/maps?q=${curMapLat},${curMapLng}`,'_blank');}
+function openYandexMaps(){window.open(`https://yandex.com/maps/?ll=${curMapLng},${curMapLat}&z=15&pt=${curMapLng},${curMapLat}`,'_blank');}
+document.getElementById('mapOverlay').addEventListener('click',function(e){if(e.target===this)closeMap();});
+  document.getElementById('bronOverlay').classList.add('show');
+  document.getElementById('bDate').value=new Date().toISOString().split('T')[0];
+}
+function closeModal(){document.getElementById('bronOverlay').classList.remove('show');}
+document.getElementById('bronOverlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
 
 function submitBron(){
-  const n=document.getElementById('bronName').value.trim();
+  const n=document.getElementById('bName').value.trim();
   if(!n){alert('Ismingizni kiriting!');return;}
-  document.getElementById('bronInner').innerHTML=`
-    <div class="success-wrap">
-      <div class="success-icon">🎉</div>
-      <div class="success-title">Bron tasdiqlandi!</div>
-      <div class="success-sub">${n}, buyurtmangiz qabul qilindi.<br>Restoran tez orada siz bilan bog'lanadi.</div>
-      <button class="btn-gold" style="width:100%;margin-top:24px;" onclick="resetBron()">Yopish</button>
-    </div>`;
+  document.getElementById('bronInner').innerHTML=`<div class="success-body"><div class="success-emoji">🎉</div><div class="success-title">Bron tasdiqlandi!</div><div class="success-sub">${n}, buyurtmangiz qabul qilindi.<br>Restoran tez orada siz bilan bog'lanadi.</div><button class="btn-primary" style="width:100%;margin-top:24px;" onclick="resetBron()">Yopish</button></div>`;
 }
-
 function resetBron(){
   closeModal();
-  document.getElementById('bronInner').innerHTML=`
-    <div class="modal-title">Joy bron qilish</div>
-    <label class="form-label">Ismingiz</label>
-    <input class="form-input" type="text" placeholder="Ism Familiya" id="bronName">
-    <div class="row-2">
-      <div><label class="form-label">Sana</label><input class="form-input" type="date" id="bronDate"></div>
-      <div><label class="form-label">Vaqt</label><input class="form-input" type="time" id="bronTime"></div>
-    </div>
-    <label class="form-label">Mehmonlar soni</label>
-    <input class="form-input" type="number" min="1" max="20" placeholder="2" id="bronGuests">
-    <label class="form-label">Izoh</label>
-    <input class="form-input" type="text" placeholder="Maxsus xohish..." id="bronNote">
-    <button class="btn-gold" style="width:100%;margin-top:4px;" onclick="submitBron()">✅ Tasdiqlash</button>
-    <button onclick="closeModal()" style="width:100%;margin-top:10px;background:none;border:0.5px solid var(--gold-border);border-radius:12px;padding:12px;color:var(--gold-muted);font-size:14px;cursor:pointer;">Bekor qilish</button>`;
+  document.getElementById('bronInner').innerHTML=`<div class="sheet-title">Joy bron qilish 📅</div><label class="f-label">Ismingiz</label><input class="f-input" type="text" placeholder="Ism Familiya" id="bName"><div class="grid2"><div><label class="f-label">Sana</label><input class="f-input" type="date" id="bDate"></div><div><label class="f-label">Vaqt</label><input class="f-input" type="time" id="bTime"></div></div><label class="f-label">Mehmonlar soni</label><input class="f-input" type="number" min="1" max="20" placeholder="2" id="bGuests"><label class="f-label">Izoh</label><input class="f-input" type="text" placeholder="Maxsus xohish..." id="bNote"><button class="btn-primary" style="width:100%;margin-top:4px;" onclick="submitBron()">Tasdiqlash ✓</button><button onclick="closeModal()" style="width:100%;margin-top:10px;background:none;border:1.5px solid var(--border);border-radius:12px;padding:11px;color:var(--text-sub);font-size:14px;cursor:pointer;">Bekor qilish</button>`;
 }
 
-function setStar(id,n){
-  const stars=document.getElementById(id).querySelectorAll('.star-btn');
-  stars.forEach((s,i)=>{s.classList.toggle('lit',i<n);});
-}
-
-function pickOpt(el){
-  const siblings=el.parentElement.querySelectorAll('.survey-opt');
-  siblings.forEach(s=>s.classList.remove('selected'));
-  el.classList.add('selected');
-}
-
+function setStar(id,n){document.getElementById(id).querySelectorAll('.star').forEach((s,i)=>s.classList.toggle('lit',i<n));}
+function pick(el){el.parentElement.querySelectorAll('.sq-opt').forEach(o=>o.classList.remove('sel'));el.classList.add('sel');}
 function submitSurvey(){
-  document.querySelector('#view-survey .scroll-content').innerHTML=`
-    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;text-align:center;padding:32px 24px;">
-      <div style="font-size:64px;margin-bottom:16px;">🌟</div>
-      <div style="font-size:20px;font-weight:600;color:var(--gold-light);margin-bottom:8px;">Rahmat!</div>
-      <div style="font-size:14px;color:var(--gold-muted);line-height:1.7;">Fikringiz restoran egasiga<br>yuborildi. Bu restoranni<br>yanada yaxshilashga yordam beradi.</div>
-      <button class="btn-gold" style="margin-top:28px;width:100%;max-width:280px;" onclick="showView('view-home')">Bosh sahifaga qaytish</button>
-    </div>`;
+  document.getElementById('surveyContent').innerHTML=`<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:70vh;text-align:center;padding:32px;"><div style="font-size:72px;margin-bottom:16px;">🌟</div><div style="font-size:22px;font-weight:700;color:var(--text-main);margin-bottom:8px;">Rahmat!</div><div style="font-size:14px;color:var(--text-sub);line-height:1.7;">Fikringiz restoran egasiga<br>yuborildi va hisobga olindi.</div><button class="btn-primary" style="margin-top:28px;width:100%;max-width:260px;" onclick="goView('v-home')">Bosh sahifaga qaytish</button></div>`;
 }
 
-renderList();
+renderList('homeList');
 </script>
 </body>
 </html>
-HTMLEOF
-echo "Done"
-Output
-
-Done
